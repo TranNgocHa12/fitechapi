@@ -1542,4 +1542,30 @@ def get_lead_count_by_company(company_name):
 		conn.close()
 		return lead_count
 		# if max_date.year == today.year - 1:
+  
+def get_timeoffset():
+	print("******* get_timeoffset *******")
+	conn = connect()
+	cursor = conn.cursor()
+	sql = "(SELECT value from config where name = 'timeoffset')"
+	cursor.execute(sql)
+	result = cursor.fetchone()
+	timeoffset = result[0]
+	conn.close()
+	return timeoffset
+
+def set_timeoffset(time_offset):
+	print("******* set_timeoffset *******",time_offset)
+	conn = connect()
+	cursor = conn.cursor()
+	sql = "Update suitecrm.config set value = %s where name = 'timeoffset'"
+	try:
+		cursor.execute(sql,(time_offset,))
+		conn.commit()
+		conn.close()	
+	except Exception as error:
+		conn.close()
+		print(error)
+		return -1
+	return 0
 			

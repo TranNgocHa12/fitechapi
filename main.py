@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from database import connect
 from fastapi import HTTPException
 from database import get_item_by_name,find_minimum_leads_by_sale,get_all_dashboard,get_this_month_dashboard,get_today_dashboard,export_all_leads_in_Malaysia,get_leads_today,get_leads_yesterday,get_active_sales,assign_sale_with_lead
-from database import get_account_by_name, check_exist_email, check_email_lead, add_email_addressed, get_contact_by_name, get_contact_assigned_user, get_account_assigned_user, get_lead_assigned_user_by_contact, get_lead_assigned_user_by_account
+from database import get_account_by_name, check_exist_email, check_email_lead, add_email_addressed, get_contact_by_name, get_contact_assigned_user, get_account_assigned_user, get_lead_assigned_user_by_contact, get_lead_assigned_user_by_account,get_timeoffset,set_timeoffset
 from database import get_lead_count, get_all_dashboard_by_date, get_email_exist, get_performance_report, get_meetings, get_lead_status_with_email, getMeeting_By_Date, get_lead_assigned_user_by_account_and_email,manual_work_lead,get_account_message_today,get_lead_count_by_company
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
@@ -268,4 +268,14 @@ async def get_accountMessageToday():
 @app.get("/getLeadCountByCompany")
 async def get_leadCountByCompany(item : ItemName):
     data = get_lead_count_by_company(item.name)
+    return data 
+
+@app.get("/getTimeoffset")
+async def get_Timeoffset():
+    data = get_timeoffset()
+    return data
+
+@app.get("/setTimeoffset")
+async def set_Timeoffset(item : ItemName):
+    data = set_timeoffset(item.name)
     return data 
