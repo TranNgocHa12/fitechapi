@@ -27,7 +27,7 @@ def connect():
 # 	return mysql.connector.connect(
 # 		host='localhost',
 # 		user='root',
-# 		password='tranha1111',
+# 		password='tranha123456',
 # 		database='suitecrm'
 # 	)
 
@@ -1569,3 +1569,36 @@ def set_timeoffset(time_offset):
 		return -1
 	return 0
 			
+def get_unsentEmail():
+	print("******* get_unsentEmail *******")
+	conn = connect()
+	cursor = conn.cursor()
+	sql = "Select id, email_address from suitecrm.email_addresses where sent = 0 order by date_created desc limit 10"
+	try:
+		cursor.execute(sql,())
+		emails = cursor.fetchall()
+		email_list = []
+		for email in emails:
+			email_dict = {"id" : email[0],"email" : email[1]}
+			email_list.append(email_dict)
+		conn.close()	
+		return email_list
+	except Exception as error:
+		conn.close()
+		print(error)
+		return -1
+
+def set_sentEmail(email_id):
+	print("******* set_sentEmail *******",email_id)
+	conn = connect()
+	cursor = conn.cursor()
+	sql = "Update suitecrm.email_addresses set sent = 1 where id = %s"
+	try:
+		cursor.execute(sql,(email_id,))
+		conn.commit()
+		conn.close()	
+		return 0
+	except Exception as error:
+		conn.close()
+		print(error)
+		return -1
