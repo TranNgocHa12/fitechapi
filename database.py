@@ -1571,7 +1571,6 @@ def set_timeoffset(time_offset):
 			
 def get_unsentEmail(email_len):
 	print("******* get_unsentEmail *******")
-	print(email_len)
 	conn = connect()
 	cursor = conn.cursor()
 	sql = "Select id, email_address from suitecrm.email_addresses where sent = 0 order by date_created desc limit %s"
@@ -1599,6 +1598,25 @@ def set_sentEmail(email_id):
 		conn.commit()
 		conn.close()	
 		return 0
+	except Exception as error:
+		conn.close()
+		print(error)
+		return -1
+
+def get_EmailTemplate(email_name):
+	print("******* get_unsentEmail *******")
+	conn = connect()
+	cursor = conn.cursor()
+	sql = "Select subject, body_html from suitecrm.email_templates where name = %s"
+	try:
+		cursor.execute(sql,(email_name,))
+		emails = cursor.fetchall()
+		email_list = []
+		for email in emails:
+			email_dict = {"subject" : email[0],"body_html" : email[1]}
+			email_list.append(email_dict)
+		conn.close()	
+		return email_list
 	except Exception as error:
 		conn.close()
 		print(error)
