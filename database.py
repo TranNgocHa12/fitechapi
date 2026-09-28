@@ -1569,13 +1569,14 @@ def set_timeoffset(time_offset):
 		return -1
 	return 0
 			
-def get_unsentEmail():
+def get_unsentEmail(email_len):
 	print("******* get_unsentEmail *******")
+	print(email_len)
 	conn = connect()
 	cursor = conn.cursor()
-	sql = "Select id, email_address from suitecrm.email_addresses where sent = 0 order by date_created desc limit 10"
+	sql = "Select id, email_address from suitecrm.email_addresses where sent = 0 order by date_created desc limit %s"
 	try:
-		cursor.execute(sql,())
+		cursor.execute(sql,(int(email_len),))
 		emails = cursor.fetchall()
 		email_list = []
 		for email in emails:

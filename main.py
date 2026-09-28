@@ -282,8 +282,8 @@ async def set_Timeoffset(item : ItemName):
     return data 
 
 @app.get("/unsentEmail")
-async def unsentEmail():
-	data = get_unsentEmail()
+async def unsentEmail(item : ItemName):
+	data = get_unsentEmail(item.name)
 	return data
 
 @app.get("/setSentEmail")
