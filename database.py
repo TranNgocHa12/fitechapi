@@ -1593,7 +1593,7 @@ def set_sentEmail(email_id):
 	conn = connect()
 	cursor = conn.cursor()
 	sql_email = "Update suitecrm.email_addresses set sent = 1 where id = %s"
-	sql_lead = "Update suitecrm.leads set status = 'Assigned, assigned_user_id = '1' where id = (select bean_id from email_addr_bean_rel where email_address_id = %s)"
+	sql_lead = "Update suitecrm.leads set status = 'Assigned', assigned_user_id = '1' where id in (select bean_id from email_addr_bean_rel where email_address_id = %s)"
 	try:
 		cursor.execute(sql_email,(email_id,))
 		cursor.execute(sql_lead,(email_id,))
